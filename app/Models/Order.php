@@ -14,7 +14,8 @@ class Order extends Model
         'shipping_address',
         'payment_method',
         'payment_status',
-        'status'
+        'status',
+        'is_hidden_by_user'
     ];
 
     public function user()

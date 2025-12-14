@@ -9,6 +9,8 @@
                 class="{{ request()->is('products') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">Produk</a>
             <a href="/orders"
                 class="{{ request()->is('orders') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">Pesanan</a>
+            <a href="/orders-trashed"
+                class="{{ request()->is('orders-trashed') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">Riwayat</a>
 
             @auth
                 <a href="/cart" class="relative">

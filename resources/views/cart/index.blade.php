@@ -134,11 +134,12 @@
                                     <form method="POST" action="/cart/remove/{{ $item->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="text-red-600 hover:underline">Hapus</button>
+                                        <button
+                                            class="bg-red-600 hover:bg-red-300 text-center py-2 px-3 mt-3 rounded-lg w-full">Hapus</button>
                                     </form>
 
-                                    <a href="{{ url('/product/' . $item->product->slug) }}"
-                                        class="block bg-black text-white text-center mt-3 py-2 rounded-lg hover:bg-gray-800">
+                                    <a href="{{ url('product/' . $item->product->slug) }}"
+                                        class="block bg-black text-white text-center mt-3 mb-3 py-2 rounded-lg hover:bg-gray-800">
                                         Detail
                                     </a>
                                 </td>

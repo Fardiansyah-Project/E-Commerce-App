@@ -31,6 +31,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{id}/upload-proof', [OrderController::class, 'uploadPaymentProof'])->name('order.upload_proof');
+    Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('admin.orders.cancel');
+    Route::delete('/destroy/items/{id}', [OrderController::class, 'destroyItems'])->name('orders.destroy');
+    Route::put('/orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
+    Route::get('/orders-trashed', [OrderController::class, 'trashed'])->name('orders.trashed');
     // Route::get('/my-orders', OrderController::class.'@index')->name('orders.index');
 });
 
@@ -50,8 +54,12 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
     });
 
     Route::prefix('orders')->group(function () {
-        Route::get('/', [OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('/get-order', [OrderController::class, 'getOrder'])->name('admin.orders.index');
         Route::get('/show/{id}', [OrderController::class, 'show'])->name('admin.orders.show');
         Route::put('/{id}/update-status', [OrderController::class, 'updateStatus'])->name('admin.orders.update_status');
+        Route::get('/edit-status/{id}', [OrderController::class, 'editStatus'])->name('admin.orders.edit_status');
+        Route::get('/success', [OrderController::class, 'getSuccess'])->name('admin.orders.success');
+        Route::get('/history', [OrderController::class, 'getAllData'])->name('admin.orders.history');
+        Route::delete('/destroy/{id}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
     });
 });

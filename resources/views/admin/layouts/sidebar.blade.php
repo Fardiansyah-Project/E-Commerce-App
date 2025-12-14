@@ -79,7 +79,7 @@
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link {{ request()->is('orders*') ? 'active' : '' }}" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link {{ request()->is('orders') ? 'active' : '' }}" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
                     <i class="mdi mdi-laptop"></i>
                 </span>
@@ -88,11 +88,9 @@
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a>
-                    </li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Dropdowns</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Typography</a>
-                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/get-order') }}">Pesanan</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/success') }}">Pesanan Selesai</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/history') }}">Riwayat Pesanan</a></li>
                 </ul>
             </div>
         </li>

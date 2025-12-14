@@ -55,26 +55,14 @@
                                             class="btn btn-sm btn-warning mr-2">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                        @if ($item->status == 'PENDING')
-                                        <form action="{{ route('admin.orders.update_status', $item->id) }}" method="post">
-                                            @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="id" value="{{ $item->id }}">
-                                            <input type="hidden" name="status" value="COMPLETED">
-                                            <input type="hidden" name="payment_status" value="CONFIRMED">
-                                            <button type="submit" class="btn btn-sm btn-success">
-                                                <i class="mdi mdi-check"></i>
-                                            </button>
-                                        </form>
-                                        @endif
-                                        {{-- <form action="{{ route('admin.orders.destroy', $item->id) }}" method="post">
+                                        <form action="{{ route('admin.orders.destroy', $item->id) }}" method="post">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-sm btn-danger"
                                                 onclick="deleteProduct({{ $item->id }})">
                                                 <i class="mdi mdi-delete"></i>
                                             </button>
-                                        </form> --}}
+                                        </form>
                                     </td>
                                 </tr>
                             @empty

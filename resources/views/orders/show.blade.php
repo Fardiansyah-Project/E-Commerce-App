@@ -10,6 +10,7 @@
             </div>
         @endif
 
+        <a href="{{ url('/orders') }}" class="bg-black hover:bg-gray-800 py-2 px-5 w-32 text-slate-200 rounded-lg mb-5">Kembali</a>
         <div class="bg-white p-6 rounded-xl shadow">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">

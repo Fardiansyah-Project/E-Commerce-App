@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -21,7 +22,7 @@ class CartController extends Controller
             'qty'        => 'required|integer|min:1'
         ]);
 
-        $user = auth()->user();
+        $user = Auth::user();
         $cart = $user->cart()->firstOrCreate([]);
 
         $product = Product::findOrFail($r->product_id);
@@ -46,7 +47,7 @@ class CartController extends Controller
 
     public function remove(Request $r, $itemId)
     {
-        $cart = auth()->user()->cart()->first();
+        $cart = Auth::user()->cart()->first();
 
         if (!$cart) {
             return back()->withErrors(['error' => 'Keranjang tidak ditemukan.']);
@@ -75,7 +76,7 @@ class CartController extends Controller
 
     public function decreaseQty($id)
     {
-        $cart = auth()->user()->cart;
+        $cart = Auth::user()->cart;
         $item = $cart->items()->where('id', $id)->firstOrFail();
 
         if ($item->qty > 1) {

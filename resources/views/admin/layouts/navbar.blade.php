@@ -47,7 +47,15 @@
                             </div>
                         </div>
                         <div class="preview-item-content">
-                            <p class="preview-subject mb-1">Log out</p>
+                            <buton class="btn btn-sm" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </buton>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                            {{-- <p class="preview-subject mb-1">
+                            </p> --}}
                         </div>
                     </a>
                     <div class="dropdown-divider"></div>

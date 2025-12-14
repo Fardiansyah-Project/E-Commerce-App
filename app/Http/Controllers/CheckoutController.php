@@ -44,20 +44,30 @@ class CheckoutController extends Controller
         ]);
 
         foreach ($cart->items as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'qty'      => $item->qty,
-                // buat agar stok produk berkurang saat order dibuat sesui quantity
-                $item->product->decrement('stock', $item->qty),
-                'price'    => $item->price_snapshot,
-                'subtotal' => $item->qty * $item->price_snapshot,
-            ]);
+            // OrderItem::create([
+            //     'order_id' => $order->id,
+            //     'product_id' => $item->product_id,
+            //     'qty'      => $item->qty,
+            //     $item->product->decrement('stock', $item->qty),
+            //     'price'    => $item->price_snapshot,
+            //     'subtotal' => $item->qty * $item->price_snapshot,
+            // ]);
+            $orderItem = new OrderItem();
+            $orderItem->order_id = $order->id;
+            $orderItem->product_id = $item->product_id;
+            $orderItem->qty = $item->qty;
+            //Mengurangi stok produk ketika status pesanan selesai
+            if($order->status == 'COMPLETED') {
+                $item->product->decrement('stock', $item->qty);
+            }
+            $orderItem->price = $item->price_snapshot;
+            $orderItem->subtotal = $item->qty * $item->price_snapshot;
+            $orderItem->save();
         }
 
-        $cart->items()->delete();
+        $cart->items()->delete(); 
 
         return redirect()->route('orders.show', $order->id)
-            ->with('success', 'Order dibuat. Silahkan upload bukti transfer jika diperlukan.');
+            ->with('success', 'Pesanan telah dibuat.');
     }
 }

@@ -40,11 +40,30 @@
                                     </span>
                                 </td>
 
-                                <td class="py-3 text-center">
+                                <td class="py-2 text-center flex gap-2 justify-center">
                                     <a href="{{ route('orders.show', $order->id) }}"
                                         class="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
                                         Detail
                                     </a>
+                                    @if ($order->status == 'PENDING')
+                                        <form action="{{ route('admin.orders.cancel', $order->id) }}" method="post">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit"
+                                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                                                Batalkan
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('orders.destroy', $order->id) }}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
