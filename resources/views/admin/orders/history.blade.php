@@ -19,6 +19,7 @@
                                 <th> Alamat Pengantaran </th>
                                 <th> Metode Pembayaran</th>
                                 <th> Status Pembayaran</th>
+                                <th> Bukti Transfer</th>
                                 <th> Status </th>
                                 <th> Aksi </th>
                             </tr>
@@ -43,6 +44,16 @@
                                     </td>
                                     <td>
                                         {{ $item->payment_method }}
+                                    </td>
+                                    <td>
+                                        @if ($item->payment_proof)
+                                            <a href="{{ asset('storage/' . $item->payment_proof) }}" target="_blank">
+                                                <img src="{{ asset('storage/' . $item->payment_proof) }}"
+                                                    alt="Bukti Pembayaran" width="100">
+                                            </a>
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td>
                                         {{ $item->payment_status }}

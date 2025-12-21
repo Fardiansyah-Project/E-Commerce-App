@@ -22,10 +22,12 @@ class CheckoutController extends Controller
     {
         $r->validate([
             'payment_method' => 'required',
-            'address'        => 'required|string|max:255'
+            'address'        => 'required|string|max:255',
+            'payment_proof'  => 'required_if:payment_method,TRANSFER',
         ], [
             'payment_method.required' => 'Metode pembayaran harus dipilih.',
-            'address.required' => 'Alamat pengiriman harus diisi.'
+            'address.required' => 'Alamat pengiriman harus diisi.',
+            'payment_proof.required_if' => 'Bukti pembayaran harus diunggah jika metode pembayaran transfer.'
         ]);
 
         $cart = auth()->user()->cart()->with('items.product')->first();
@@ -40,6 +42,7 @@ class CheckoutController extends Controller
             'shipping_address' => $r->address,
             'payment_method'  => $r->payment_method,
             'payment_status'  => 'PENDING',
+            'payment_proof' => $r->file('payment_proof') ? $r->file('payment_proof')->store('payment_proofs', 'public') : null,
             'status'          => 'PENDING'
         ]);
 
@@ -70,4 +73,5 @@ class CheckoutController extends Controller
         return redirect()->route('orders.show', $order->id)
             ->with('success', 'Pesanan telah dibuat.');
     }
+    
 }

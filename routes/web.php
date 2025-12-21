@@ -16,34 +16,34 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [HomeController::class, 'showProducts'])->name('products');
 Route::get('/product/{slug}', [ProductController::class, 'show'])->name('product.show');
-
 Route::middleware(['auth'])->group(function () {
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
-    Route::post('/cart/increase/{id}', [CartController::class, 'increaseQty'])->name('cart.increase');
-    Route::post('/cart/decrease/{id}', [CartController::class, 'decreaseQty'])->name('cart.decrease');
-
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-    Route::post('/checkout/store', [CheckoutController::class, 'store'])->name('checkout.store');
-    Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
-
-    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-    Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
-    Route::post('/orders/{id}/upload-proof', [OrderController::class, 'uploadPaymentProof'])->name('order.upload_proof');
-    Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('admin.orders.cancel');
-    Route::delete('/destroy/items/{id}', [OrderController::class, 'destroyItems'])->name('orders.destroy');
-    Route::put('/orders/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
-    Route::get('/orders-trashed', [OrderController::class, 'trashed'])->name('orders.trashed');
-    // Route::get('/my-orders', OrderController::class.'@index')->name('orders.index');
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('cart.index');
+        Route::post('/add', [CartController::class, 'add'])->name('cart.add');
+        Route::post('/increase/{id}', [CartController::class, 'increaseQty'])->name('cart.increase');
+        Route::post('/decrease/{id}', [CartController::class, 'decreaseQty'])->name('cart.decrease');
+        Route::delete('/remove/{itemId}', [CartController::class, 'remove'])->name('cart.remove');
+    });
+    Route::prefix('checkout')->group(function () {
+        Route::get('/', [CheckoutController::class, 'index'])->name('checkout.index');
+        Route::post('/store', [CheckoutController::class, 'store'])->name('checkout.store');
+    });
+    Route::prefix('orders')->group(function () {
+        Route::get('/', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::post('/store', [OrderController::class, 'store'])->name('orders.store');
+        Route::post('/{id}/upload-proof', [OrderController::class, 'uploadPaymentProof'])->name('order.upload_proof');
+        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('admin.orders.cancel');
+        Route::delete('/destroy/items/{id}', [OrderController::class, 'destroyItems'])->name('orders.destroy');
+        Route::put('/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
+        Route::get('/order/trashed', [OrderController::class, 'trashed'])->name('orders.trashed');
+        // Route::get('/my-orders', OrderController::class.'@index')->name('orders.index');
+    });
 });
-
-// Admin Routes
 Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
         Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
@@ -52,7 +52,6 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::put('/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
     });
-
     Route::prefix('orders')->group(function () {
         Route::get('/get-order', [OrderController::class, 'getOrder'])->name('admin.orders.index');
         Route::get('/show/{id}', [OrderController::class, 'show'])->name('admin.orders.show');

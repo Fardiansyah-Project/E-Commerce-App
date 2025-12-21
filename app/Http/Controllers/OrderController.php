@@ -64,6 +64,13 @@ class OrderController extends Controller
                 $item->product->decrement('stock', $item->qty);
             });
         }
+        
+        $order->update(['payment_status' => $request->payment_status]);
+        // if ($order->payment_status == 'COMPLETED') {
+        //     $order->items()->each(function ($item) {
+        //         $item->product->decrement('stock', $item->qty);
+        //     });
+        // }
 
         if ($order->status == 'CANCELLED') {
             $order->items()->each(function ($item) {
@@ -108,7 +115,6 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        // Ambil cart milik user
         $cartItems = Cart::where('user_id', Auth::id())->get();
 
         if ($cartItems->count() == 0) {
@@ -128,7 +134,6 @@ class OrderController extends Controller
             'address' => $request->address,
         ]);
 
-        // 2. Simpan detail item
         foreach ($cartItems as $item) {
             OrderItem::create([
                 'order_id' => $order->id,
@@ -138,7 +143,6 @@ class OrderController extends Controller
             ]);
         }
 
-        // 3. Kosongkan cart
         Cart::where('user_id', Auth::id())->delete();
 
         return redirect()->route('orders.show', $order->id)

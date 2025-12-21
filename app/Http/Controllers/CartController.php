@@ -83,7 +83,7 @@ class CartController extends Controller
             $item->qty -= 1;
             $item->save();
         } else {
-            $item->delete(); // jika qty = 0, hapus item
+            $item->delete(); 
         }
 
         return back()->with('success', 'Jumlah produk dikurangi.');
