@@ -7,6 +7,7 @@
     <title>{{ $title ?? 'Toko Sepatu' }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     @vite('resources/css/app.css')
 </head>
 

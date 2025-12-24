@@ -18,10 +18,27 @@
             </div>
         </div>
 
-        {{-- Produk Terlaris --}}
-        <h2 class="text-2xl font-semibold mb-4">🔥 Produk Terlaris</h2>
+        {{-- Produk Populer --}}
+        <h2 class="text-2xl font-semibold mb-4">Produk Rekomendasi🔥</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            @foreach ($bestSeller as $product)
+            @foreach ($mostViewed as $product)
+                <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4 hover:scale-110">
+                    <img src="{{ asset('storage/images/products/' . $product->image) }}" class="w-full h-48 object-cover rounded-lg mb-4">
+                    <h3 class="font-semibold">{{ $product->name }}</h3>
+                    <p class="text-gray-500">Rp{{ number_format($product->price) }}</p>
+
+                    <a href="/product/{{ $product->slug }}"
+                        class="block bg-black text-white text-center mt-3 py-2 rounded-lg hover:bg-gray-800">
+                        Detail
+                    </a>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- Produk Terlaris --}}
+        <h2 class="text-2xl font-semibold mb-4 mt-3">Produk Terlaris🔥</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach ($bestSellers as $product)
                 <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4 hover:scale-110">
                     <img src="{{ asset('storage/images/products/' . $product->image) }}" class="w-full h-48 object-cover rounded-lg mb-4">
                     <h3 class="font-semibold">{{ $product->name }}</h3>

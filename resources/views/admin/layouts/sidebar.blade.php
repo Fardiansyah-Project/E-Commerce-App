@@ -1,9 +1,11 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-        <a class="sidebar-brand brand-logo" href="index.html"><img src="{{ asset('assets/images/logo.svg') }}"
-                alt="logo" /></a>
-        <a class="sidebar-brand brand-logo-mini" href="index.html"><img src="{{ asset('assets/images/logo-mini.svg') }}"
-                alt="logo" /></a>
+        <a class="sidebar-brand brand-logo" href="{{ url('admin/dashboard') }}">
+            <img src="{{ asset('assets/images/snikers2.png') }}"  alt="logo" />
+        </a>
+        <a class="sidebar-brand brand-logo-mini w-100" href="{{ url('admin/dashboard') }}">
+            <img src="{{ asset('assets/images/letter-s.png') }}" alt="logo"/>
+        </a>
     </div>
     <ul class="nav">
         <li class="nav-item profile">
@@ -65,7 +67,7 @@
         <li class="nav-item menu-items">
             <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}" href="{{ url('admin/dashboard') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-speedometer"></i>
+                    <i class="mdi mdi-home-analytics"></i>
                 </span>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -73,24 +75,49 @@
         <li class="nav-item menu-items">
             <a class="nav-link {{ request()->is('products*') ? 'active' : '' }}" href="{{ url('admin/products') }}">
                 <span class="menu-icon">
-                    <i class="mdi mdi-speedometer"></i>
+                    <i class="mdi mdi-package-variant-closed"></i>
                 </span>
                 <span class="menu-title">Produk</span>
             </a>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link {{ request()->is('orders') ? 'active' : '' }}" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a class="nav-link {{ request()->is('orders') ? 'active' : '' }}" data-toggle="collapse" href="#ui-basic"
+                aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-icon">
-                    <i class="mdi mdi-laptop"></i>
+                    <i class="mdi mdi-email"></i>
                 </span>
                 <span class="menu-title">Data Pesanan</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/get-order') }}">Pesanan</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/success') }}">Pesanan Selesai</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/history') }}">Riwayat Pesanan</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/get-order') }}">Pesanan</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/success') }}">Pesanan
+                            Selesai</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/orders/history') }}">Riwayat
+                            Pesanan</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item nav-category">
+            <span class="nav-link">Lainnya</span>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link {{ request()->is('users') ? 'active' : '' }}" data-toggle="collapse" href="#users"
+                aria-expanded="false" aria-controls="users">
+                <span class="menu-icon">
+                    <i class="mdi mdi-account-group"></i>
+                </span>
+                <span class="menu-title">Daftar Pengguna</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="users">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/users/customers') }}">Customer</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/users/admins') }}">Admin</a>
+                    </li>
                 </ul>
             </div>
         </li>

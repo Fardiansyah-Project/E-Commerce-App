@@ -32,12 +32,12 @@
                 <form action="{{ route('logout') }}" method="POST" class="inline-block">
                     @csrf
                     <button class="text-red-400 hover:text-black">
-                        <i class="fas fa-sign-out-alt"></i>
+                       Keluar <i class="fas fa-sign-out-alt"></i> 
                     </button>
                 </form>
             @else
                 <a href="/login" class="text-gray-600 hover:text-black">
-                    <i class="fas fa-sign-in-alt"></i>
+                    Masuk <i class="fas fa-sign-in-alt"></i> 
                 </a>
             @endauth
         </div>

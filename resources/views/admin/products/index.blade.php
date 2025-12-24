@@ -35,7 +35,7 @@
                                     <td>{{ $product->slug }}</td>
                                     <td>Rp{{ number_format($product->price, 0, ',', '.') }}</td>
                                     <td>
-                                        <a href="{{ route('admin.products.edit', $product->id) }}">
+                                        <a href="{{ asset('storage/images/products/' . $product->image) }}" target="_blank">
                                             <img src="{{ asset('storage/images/products/' . $product->image) }}"
                                                 alt="{{ $product->name }}" width="100">
                                         </a>
@@ -57,6 +57,9 @@
                                     </td>
                                 </tr>
                             @empty
+                                <tr>
+                                    <td colspan="8" class="text-muted text-center">Tidak ada data</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>

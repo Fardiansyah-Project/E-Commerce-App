@@ -137,10 +137,39 @@ body {
     letter-spacing: 0.5px;
 }
 
+.back-button {
+    width: 100%;
+    padding: 14px;
+    background: #58616b;
+    color: #ffffff;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .login-button:hover {
     background: #357abd;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+}
+
+.back-button:hover {
+    background: #59646d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(142, 156, 171, 0.4);
 }
 
 .login-button:active {
@@ -175,6 +204,13 @@ body {
     color: #ff6b7a;
 }
 
+.logo>img {
+    background-color: #fff;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+
 @media (max-width: 480px) {
     .login-container {
         margin: 0 10px;
@@ -188,3 +224,4 @@ body {
         padding: 30px 20px;
     }
 }
+

@@ -90,7 +90,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8">Tidak ada pesanan saat ini</td>
+                                    <td colspan="10" class="text-muted text-center">Tidak ada pesanan saat ini</td>
                                 </tr>
                             @endforelse
                         </tbody>

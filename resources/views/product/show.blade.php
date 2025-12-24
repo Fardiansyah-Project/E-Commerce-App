@@ -33,7 +33,9 @@
                     <p class="text-gray-700 font-semibold">Deskripsi: {{ $product->description }}</p>
                     <p class="text-gray-700 font-semibold">Dilihat: {{ $product->views }}</p>
                     <p class="text-gray-700 font-semibold">Ditambahkan: {{ $product->created_at->format('d F Y') }}</p>
-                    <p class="text-gray-700 font-semibold">Terjual: {{ $product->orderItems()->sum('qty') }}</p>
+                    <p class="text-gray-700 font-semibold">Terjual: {{ $product->orderItems()->whereHas('order', function ($order) {
+                        $order->whereIn('status', ['COMPLETED']);
+                    })->sum('qty') }}</p>
                 </div>
             </div>
         </div>

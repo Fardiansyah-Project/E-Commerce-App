@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -22,6 +24,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            if(Auth::user()->role == "ADMIN"){
+
+                return redirect()->route('admin.dashboard')->with('success', 'Berhasil login');
+            }
+
             return redirect()->route('login')->with('success', 'Login berhasil, tunggu beberapa saat...');
         }
 
@@ -38,5 +45,60 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Logout berhasil!');
+    }
+
+    public function register()
+    {
+        return view('auth.register');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'name.max' => 'Nama maksimal 255 karakter.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Email tidak valid.',
+            'email.max' => 'Email maksimal 255 karakter.',
+            'email.unique' => 'Email sudah terdaftar.',
+            'password.required' => 'Password wajib diisi.',
+            'password.confirmed' => 'Konfirmasi password tidak sesuai.',
+            'password.min' => 'Password minimal 8 karakter.',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('register')->with('success', 'Register berhasil, tunggu beberapa saat...');
+    }
+
+    public function editAddress($id)
+    {
+        $user = User::findOrFail($id);
+        return view('auth.edit-address', compact('user'));
+    }
+
+    public function updateAddress(Request $request, $id)
+    {
+        $request->validate([
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+        
+        $user = User::findOrFail($id);
+
+        $user->address = $request->address;
+        $user->update();
+
+        return redirect()->back()->with('success', 'Alamat berhasil diperbarui!');
     }
 }

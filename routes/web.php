@@ -6,12 +6,20 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 use Illuminate\Container\Attributes\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::prefix('/register')->group(function () {
+    Route::get('/', [AuthController::class, 'register'])->name('register');
+    Route::post('/store', [AuthController::class, 'store'])->name('register.store');
+    Route::get('/edit-address/{id}', [AuthController::class, 'editAddress'])->name('register.edit-address');
+    Route::post('/update-address/{id}', [AuthController::class, 'updateAddress'])->name('register.update-address');
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products', [HomeController::class, 'showProducts'])->name('products');
@@ -60,5 +68,14 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::get('/success', [OrderController::class, 'getSuccess'])->name('admin.orders.success');
         Route::get('/history', [OrderController::class, 'getAllData'])->name('admin.orders.history');
         Route::delete('/destroy/{id}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+    });
+    Route::prefix('users')->group(function () {
+        Route::get('/customers', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/admins', [UserController::class, 'admin'])->name('admin.users.admin');
+        Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+        Route::put('/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
+        Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     });
 });

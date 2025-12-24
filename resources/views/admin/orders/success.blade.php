@@ -67,7 +67,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8">Belum ada pesana selesai saat ini.</td>
+                                    <td colspan="9" class="text-muted text-center">Tidak ada pesanan selesai saat ini</td>
                                 </tr>
                             @endforelse
                         </tbody>

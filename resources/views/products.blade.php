@@ -2,22 +2,8 @@
 
 @section('content')
     <div class="container mx-auto px-5 py-5">
-        {{-- Hero Banner --}}
-        {{-- <div class="bg-white shadow rounded-2xl p-8 flex flex-col md:flex-row items-center mb-12">
-            <div class="flex-1">
-                <h1 class="text-4xl font-bold mb-4">Temukan Sepatu Impianmu</h1>
-                <p class="text-gray-600 mb-6">
-                    Koleksi sepatu terbaru, terlaris, dan rekomendasi khusus untukmu.
-                </p>
-                <a href="/products" class="bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 transition">
-                    Belanja Sekarang
-                </a>
-            </div>
-            <img src="/images/hero-shoes.png" class="w-80">
-        </div> --}}
-
-        {{-- Produk Terlaris --}}
-        <h2 class="text-2xl font-semibold mb-4">🙌 Produk Tersedia</h2>
+        {{-- Produk Tesedia --}}
+        <h2 class="text-2xl font-semibold mb-4">Produk Tersedia🙌</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach ($products as $product)
                 <div class="bg-white rounded-xl shadow hover:shadow-lg transition p-4">

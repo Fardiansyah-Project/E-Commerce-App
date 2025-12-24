@@ -1,15 +1,15 @@
 @extends('admin.layouts.base')
 @section('title')
-    Customer
+    Admin
 @endsection
 @section('content')
     <div class="col-12 grid-margin">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Data Customer</h4>
-                {{-- <div class="ml-auto w-auto">
-                    <a href="{{ route('admin.users.create') }}" class="btn btn-outline-primary">Tambah Produk</a>
-                </div> --}}
+            <div class="card-header d-flex justify-content-between py-auto my-auto">
+                <h4 class="card-title">Data Admin</h4>
+                <div class="ml-auto w-auto">
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-outline-primary">Tambah Admin</a>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($users as $user)
+                            @forelse ($admins as $user)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
