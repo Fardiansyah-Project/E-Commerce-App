@@ -23,3 +23,8 @@
 <script src="{{ asset('assets/js/user.js') }}"></script>
 <script src="{{ asset('assets/js/review.js') }}"></script>
 <script src="{{ asset('assets/js/setting.js') }}"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+@yield('scripts')

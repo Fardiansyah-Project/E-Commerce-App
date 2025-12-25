@@ -7,6 +7,8 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Jorenvh\Share\Share;
+use Jorenvh\Share\ShareFacade;
 
 class ProductController extends Controller
 {
@@ -14,11 +16,22 @@ class ProductController extends Controller
     {
         // Incerement berdasarkan user
         $product = Product::with('images')->where('slug', $slug)->firstOrFail();
-        if(Auth::check()){
+        if (Auth::check()) {
             $product->increment('views');
         }
 
-        return view('product.show', compact('product'));
+        // Product url
+        $productUrl = url()->current();
+
+        $shareComponent = ShareFacade::page($productUrl, $product->name)
+            ->facebook()
+            ->twitter()
+            ->linkedin()
+            ->whatsapp()
+            ->telegram();
+
+        $rawLinks = $shareComponent->getRawLinks();
+        return view('product.show', compact('product', 'shareComponent', 'rawLinks'));
     }
 
     public function index()
@@ -115,7 +128,7 @@ class ProductController extends Controller
 
         $slug = strtolower(str_replace(' ', '-', $request->name));
         $product = Product::find($id);
-         if ($request->stock < 0) {
+        if ($request->stock < 0) {
             $isActive = false;
         } else {
             $isActive = true;

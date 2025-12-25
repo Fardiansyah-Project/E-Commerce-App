@@ -81,24 +81,4 @@ class AuthController extends Controller
 
         return redirect()->route('register')->with('success', 'Register berhasil, tunggu beberapa saat...');
     }
-
-    public function editAddress($id)
-    {
-        $user = User::findOrFail($id);
-        return view('auth.edit-address', compact('user'));
-    }
-
-    public function updateAddress(Request $request, $id)
-    {
-        $request->validate([
-            'address' => ['required', 'string', 'max:255'],
-        ]);
-        
-        $user = User::findOrFail($id);
-
-        $user->address = $request->address;
-        $user->update();
-
-        return redirect()->back()->with('success', 'Alamat berhasil diperbarui!');
-    }
 }

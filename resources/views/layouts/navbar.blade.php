@@ -3,6 +3,12 @@
         <a href="/" class="font-bold text-2xl text-gray-800">SneakerStore</a>
 
         <div class="hidden md:flex items-center space-x-7">
+            @auth
+                <a href="{{ url('user/profile/'. auth()->user()->id ) }}"
+                    class="{{ request()->is('user/profile/'. auth()->user()->id) ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
+                    <i class="fas fa-user"></i>
+                </a>
+            @endauth
             <a href="/"
                 class="{{ request()->is('/') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
                 <i class="fas fa-home"></i>
@@ -32,12 +38,12 @@
                 <form action="{{ route('logout') }}" method="POST" class="inline-block">
                     @csrf
                     <button class="text-red-400 hover:text-black">
-                       Keluar <i class="fas fa-sign-out-alt"></i> 
+                        Keluar <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </form>
             @else
                 <a href="/login" class="text-gray-600 hover:text-black">
-                    Masuk <i class="fas fa-sign-in-alt"></i> 
+                    Masuk <i class="fas fa-sign-in-alt"></i>
                 </a>
             @endauth
         </div>

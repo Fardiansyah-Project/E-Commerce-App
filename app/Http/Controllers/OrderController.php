@@ -11,25 +11,29 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function getAllData()
+    public function getAllData(Request $request)
     {
-        $orders = Order::paginate(10);
+        $paginate = $request->input('paginate', 5);
+        $orders = Order::orderBy('id', 'desc')->paginate($paginate);
 
         return view('admin.orders.history', compact('orders'));
     }
-    public function getOrder()
+    public function getOrder(Request $request)
     {
-        $orders = Order::where('status', 'PENDING')->paginate(10);
+        $paginate = $request->input('paginate', 10);
+        $orders = Order::where('status', 'PENDING')->paginate($paginate);
 
         return view('admin.orders.index', compact('orders'));
     }
 
-    public function getSuccess()
+    public function getSuccess(Request $request)
     {
-        $orders = Order::where('status', 'COMPLETED')->paginate(10);
+        $paginate = $request->input('paginate', 10);
+        $orders = Order::where('status', 'COMPLETED')->paginate($paginate);
 
         return view('admin.orders.success', compact('orders'));
     }
+    
     public function index()
     {
         $orders = Auth::user()

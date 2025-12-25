@@ -11,19 +11,16 @@
             <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    <div class="row">
-                        @yield('content')
-                    </div>
+                    @yield('content')
                 </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
                 <footer class="footer">
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©
-                            bootstrapdash.com 2020</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a
-                                href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap
-                                admin templates</a> from Bootstrapdash.com</span>
+                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">&copy; SneakerStore — All Rights Reserved {{ date('Y') }} </span>
+
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Documentation Project <a
+                                href="https://github.com/Fardiansyah-Project/E-Commerce-App" target="_blank">Repository Github </a> from github.com</span>
                     </div>
                 </footer>
                 <!-- partial -->

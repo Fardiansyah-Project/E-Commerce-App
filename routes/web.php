@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
@@ -17,8 +19,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::prefix('/register')->group(function () {
     Route::get('/', [AuthController::class, 'register'])->name('register');
     Route::post('/store', [AuthController::class, 'store'])->name('register.store');
-    Route::get('/edit-address/{id}', [AuthController::class, 'editAddress'])->name('register.edit-address');
-    Route::post('/update-address/{id}', [AuthController::class, 'updateAddress'])->name('register.update-address');
 });
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -47,11 +47,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/order/trashed', [OrderController::class, 'trashed'])->name('orders.trashed');
         // Route::get('/my-orders', OrderController::class.'@index')->name('orders.index');
     });
+    Route::prefix('user')->group(function () {
+        Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user.profile');
+        Route::get('/edit/{id}', [UserController::class, 'editAddress'])->name('profile.edit');
+        Route::put('/update/{id}', [UserController::class, 'updateAddress'])->name('profile.update');
+    });
 });
 Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
         Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
@@ -77,5 +80,13 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::get('/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
         Route::put('/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/destroy/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    });
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoriesController::class, 'index'])->name('admin.categories.index');
+        Route::get('/create', [CategoriesController::class, 'create'])->name('admin.categories.create');
+        Route::post('/store', [CategoriesController::class, 'store'])->name('admin.categories.store');
+        Route::get('/edit/{id}', [CategoriesController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('/update/{id}', [CategoriesController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/destroy/{id}', [CategoriesController::class, 'destroy'])->name('admin.categories.destroy');
     });
 });

@@ -55,7 +55,7 @@ class UserController extends Controller
         $data->role = $request->role;
         $data->save();
 
-        if($request->role == "ADMIN") {
+        if ($request->role == "ADMIN") {
             return redirect()->route('admin.users.admin')->with('success', 'Admin berhasil ditambahkan');
         }
 
@@ -104,10 +104,36 @@ class UserController extends Controller
         $data = User::find($id);
         $data->delete();
 
-        if($data->role == "ADMIN") {
+        if ($data->role == "ADMIN") {
             return redirect()->route('admin.users.admin')->with('success', 'Pengguna berhasil dihapus');
         }
 
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus');
+    }
+
+    public function profile($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile.profile', compact('user'));
+    }
+
+    public function editAddress($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile.edit', compact('user'));
+    }
+
+    public function updateAddress(Request $request, $id)
+    {
+        $request->validate([
+            'address' => ['required', 'string', 'max:255'],
+        ]);
+
+        $user = User::findOrFail($id);
+
+        $user->address = $request->address;
+        $user->update();
+
+        return redirect()->back()->with('success', 'Alamat berhasil diperbarui!');
     }
 }

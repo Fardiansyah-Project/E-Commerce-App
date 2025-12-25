@@ -1,10 +1,10 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
         <a class="sidebar-brand brand-logo" href="{{ url('admin/dashboard') }}">
-            <img src="{{ asset('assets/images/snikers2.png') }}"  alt="logo" />
+            <img src="{{ asset('assets/images/snikers2.png') }}" alt="logo" />
         </a>
         <a class="sidebar-brand brand-logo-mini w-100" href="{{ url('admin/dashboard') }}">
-            <img src="{{ asset('assets/images/letter-s.png') }}" alt="logo"/>
+            <img src="{{ asset('assets/images/letter-s.png') }}" alt="logo" />
         </a>
     </div>
     <ul class="nav">
@@ -102,6 +102,14 @@
         </li>
         <li class="nav-item nav-category">
             <span class="nav-link">Lainnya</span>
+        </li>
+        <li class="nav-item menu-items">
+            <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}" href="{{ url('admin/categories') }}">
+                <span class="menu-icon">
+                    <i class="mdi mdi-package-variant-closed"></i>
+                </span>
+                <span class="menu-title">Kategori Produk</span>
+            </a>
         </li>
         <li class="nav-item menu-items">
             <a class="nav-link {{ request()->is('users') ? 'active' : '' }}" data-toggle="collapse" href="#users"

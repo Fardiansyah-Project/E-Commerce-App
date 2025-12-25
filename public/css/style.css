@@ -204,7 +204,7 @@ body {
     color: #ff6b7a;
 }
 
-.logo>img {
+.logo > img {
     background-color: #fff;
     border-radius: 50%;
     width: 100px;
@@ -225,3 +225,43 @@ body {
     }
 }
 
+/* Image Zoom Effect */
+.product-image-container {
+    overflow: hidden;
+    border-radius: 1rem;
+    background: #f3f4f6;
+}
+
+.product-image {
+    transition: transform 0.5s ease;
+}
+
+.product-image:hover {
+    transform: scale(1.1);
+}
+
+/* Badge Animation */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.badge-animated {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Info Card Style */
+.info-item {
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    background-color: #f9fafb;
+    transform: translateX(5px);
+}
