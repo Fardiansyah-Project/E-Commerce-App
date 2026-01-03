@@ -20,6 +20,7 @@ class UserController extends Controller
         confirmDelete($title, $text);
         return view('admin.users.index', compact('users'));
     }
+
     public function admin()
     {
         $admins = User::where('role', 'ADMIN')
@@ -67,7 +68,7 @@ class UserController extends Controller
             Alert::success('success', 'Admin berhasil ditambahkan');
             return redirect()->route('admin.users.admin')->with('success', 'Admin berhasil ditambahkan');
         }
-        
+
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan');
     }
 
@@ -135,10 +136,56 @@ class UserController extends Controller
     public function editProfile($id)
     {
         $user = User::findOrFail($id);
-        if ($user->role == "ADMIN") {
-            return redirect()->route('admin.users.admin');
-        }
         return view('profile.edit', compact('user'));
+    }
+
+    public function editPassword($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.profile.changePassword', compact('user'));
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $request->validate([
+            'new_password' => 'required|min:8|confirmed',
+            'current_password' => 'required',
+        ], [
+            'current_password.required' => 'Kata sandi saat ini wajib diisi',
+            'new_password.required' => 'Password wajib diisi',
+            'new_password.min' => 'Password minimal 8 karakter',
+            'new_password.confirmed' => 'Konfirmasi password tidak sesuai',
+        ]);
+        $user = User::findOrFail($id);
+        if (!Hash::check($request->current_password, $user->password)) {
+
+            Alert::warning('Warning', 'Kata sandi saat ini salah!');
+            return redirect()->back()->withErrors(['current_password' => 'Kata sandi saat ini salah.']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        if ($request->new_password != $request->new_password_confirmation) {
+
+            Alert::warning('Warning', 'Password baru berbeda dengan konfirmasi password!');
+            return redirect()->back();
+        }
+        $user->update();
+
+        Alert::success('Success', 'Password berhasil diperbarui!');
+        return redirect()->route('admin.profile.edit_password', $id)->with('success', 'Password berhasil diperbarui!');
+    }
+
+    public function adminProfile($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.profile.index', compact('user'));
+    }
+
+    public function adminEditProfile($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('admin.profile.edit', compact('user'));
     }
 
     public function updateProfile(Request $request, $id)
@@ -165,10 +212,19 @@ class UserController extends Controller
         // ]);
 
         $user = User::findOrFail($id);
-        $user->address = $request->address;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone = $request->phone;
+        if ($user->role != 'ADMIN') {
+            $user->address = $request->address;
+            $user->phone = $request->phone;
+            if (empty($request->address) || empty($request->name) || empty($request->email) || empty($request->phone)) {
+                Alert::Warning('Warning', 'Periksa inputan anda!');
+                return redirect()->back();
+            }
+            $user->update();
+            Alert::success('Success', 'Perubahan berhasil disimpan!');
+            return redirect()->route('user.profile', $id)->with('success', 'Data berhasil diperbarui!');
+        }
         if ($request->password) {
             $user->password = Hash::make($request->password);
             return redirect()->route('user.profile', $id)->with('success', 'Password berhasil diperbarui!');
@@ -178,12 +234,12 @@ class UserController extends Controller
             $request->file('avatar')->move(public_path('storage/images/profile'), $imageName);
             $user->avatar = $imageName;
         }
-        if (empty($request->address) || empty($request->name) || empty($request->email) || empty($request->phone)) {
-            Alert::Warning('Warning', 'Inputan anda tidak valid!');
+        if (empty($request->name) || empty($request->email)) {
+            Alert::Warning('Warning', 'Periksa inputan anda!');
             return redirect()->back();
         }
         $user->update();
         Alert::success('Success', 'Perubahan berhasil disimpan!');
-        return redirect()->route('user.profile', $id)->with('success', 'Data berhasil diperbarui!');
+        return redirect()->route('admin.profile.index', $id)->with('success', 'Data berhasil diperbarui!');
     }
 }

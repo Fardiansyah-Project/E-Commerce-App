@@ -23,7 +23,7 @@
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Ubah</button>
-                    <a href="{{ url('/admin/products') }}" class="btn btn-dark">Kembali</a>
+                    <a href="{{ url('/admin/orders/success') }}" class="btn btn-dark">Kembali</a>
                 </form>
             </div>
         </div>

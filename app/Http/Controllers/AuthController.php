@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuthController extends Controller
 {
@@ -25,7 +26,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if(Auth::user()->role == "ADMIN"){
-
+                Alert::success('success', 'Login berhasil sebagai admin');
                 return redirect()->route('admin.dashboard')->with('success', 'Berhasil login');
             }
 

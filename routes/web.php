@@ -89,4 +89,11 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::put('/update/{id}', [CategoriesController::class, 'update'])->name('admin.categories.update');
         Route::delete('/destroy/{id}', [CategoriesController::class, 'destroy'])->name('admin.categories.destroy');
     });
+    Route::prefix('profile')->group(function () {
+        Route::get('/{id}', [UserController::class, 'adminProfile'])->name('admin.profile.index');
+        Route::get('/edit/{id}', [UserController::class, 'adminEditProfile'])->name('admin.profile.edit');
+        Route::put('/update/{id}', [UserController::class, 'updateProfile'])->name('admin.profile.update');
+        Route::get('/edit-password/{id}', [UserController::class, 'editPassword'])->name('admin.profile.edit_ password');
+        Route::put('/change-password/{id}', [UserController::class, 'updatePassword'])->name('admin.profile.change_password');
+    });
 });
