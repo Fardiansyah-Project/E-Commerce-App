@@ -1,6 +1,6 @@
 @extends('admin.layouts.base')
 @section('title')
-    Tambah Kategori
+    Edit Kategori
 @endsection
 @section('content')
     <div class="row">
@@ -8,14 +8,14 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Form Kategori</h4>
-                    <form class="forms-sample" action="{{ route('admin.categories.store') }}" method="POST"
-                        enctype="multipart/form-data">
+                    <form class="forms-sample" action="{{ route('admin.categories.update', $category->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <input type="hidden" value="ADMIN" id="role" name="role">
                         <div class="form-group">
                             <label for="name">Nama</label>
-                            <input type="text" value="{{ old('name') }}" class="form-control" id="name"
-                                name="name" placeholder="Nama" autocomplete="off">
+                            <input type="text" value="{{ old('name', $category->name) }}" class="form-control"
+                                id="name" name="name" placeholder="Nama" autocomplete="off">
                             @error('name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -23,7 +23,7 @@
                         <button id="btn-loading" type="submit" class="btn btn-primary mr-2">
                             <span id="loading" class="spinner-border spinner-border-sm" role="status"
                                 aria-hidden="true"></span>
-                            Tambah
+                            Simpan
                         </button>
                         <a href="{{ url('/admin/categories') }}" class="btn btn-dark">Kembali</a>
                     </form>

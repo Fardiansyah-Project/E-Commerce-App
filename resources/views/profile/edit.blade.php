@@ -15,13 +15,17 @@
                 class="p-6 sm:p-8 space-y-6">
                 @csrf
                 @method('PUT')
-
                 <!-- Avatar -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Foto Profil</label>
                     <div class="flex items-center gap-4">
-                        <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . auth()->user()->name }}"
-                            class="w-20 h-20 rounded-full object-cover border">
+                        @if (!empty($user->avatar))
+                            <img src="{{ asset('storage/images/profile/' . $user->avatar) }}"
+                                class="w-20 h-20 rounded-full object-cover border">
+                        @else
+                            <img src="{{ 'https://ui-avatars.com/api/?name=' . $user->name }}"
+                                class="w-20 h-20 rounded-full object-cover border">
+                        @endif
                         <input type="file" name="avatar"
                             class="block w-full text-sm text-gray-600
                                   file:mr-4 file:py-2 file:px-4
@@ -29,6 +33,9 @@
                                   file:text-sm file:font-semibold
                                   file:bg-indigo-50 file:text-indigo-600
                                   hover:file:bg-indigo-100">
+                        @error('avatar')
+                            <small class="text-red-500 text-xs mt-1">{{ $message }}</small>
+                        @enderror
                     </div>
                 </div>
                 <div>

@@ -33,8 +33,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(1)->create([
+            'name' => 'Fardi',
+            'email' => 'fardi@gmail.com',
             'role' => 'CUSTOMER',
-            'address' => 'Jl. Contoh Alamat No. 123, Kota Palu, Indonesia',
+            'address' => 'Jl. Malontara No. 123, Kota Palu, Indonesia',
             'phone' => '082345460707',
             'password' => Hash::make('password'),
         ]);

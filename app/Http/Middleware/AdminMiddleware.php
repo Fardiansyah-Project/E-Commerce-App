@@ -20,6 +20,6 @@ class AdminMiddleware
             return $next($request);
         }
     
-        abort(403, 'Halaman untuk admin.');
+        abort(403, 'Halaman ini sangat rahasia.');
     }
 }

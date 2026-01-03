@@ -16,11 +16,16 @@
 
                 <!-- Avatar -->
                 <div class="flex-shrink-0">
-                    <img
-                        src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . auth()->user()->name }}"
-                        class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500"
-                        alt="Avatar"
-                    >
+                    @if (!empty(auth()->user()->avatar))
+                        <img src="{{ asset('storage/images/profile/' . auth()->user()->avatar) }}"
+                            class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500"
+                            alt="Avatar">
+                    @else
+                        <img
+                            src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . auth()->user()->name }}"
+                            class="w-32 h-32 rounded-full object-cover border-4 border-indigo-500"
+                            alt="Avatar">
+                    @endif
                 </div>
 
                 <!-- User Info -->

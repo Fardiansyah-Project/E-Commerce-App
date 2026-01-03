@@ -77,14 +77,16 @@
                                                 class="btn btn-sm btn-warning mr-2">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('admin.orders.destroy', $item->id) }}" method="post">
+                                            <a href="{{ route('admin.orders.destroy', $item->id) }}" class="btn btn-sm btn-danger" data-confirm-delete="true" >
+                                                <i class="mdi mdi-delete"></i>
+                                            </a>
+                                            {{-- <form action="{{ route('admin.orders.destroy', $item->id) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="btn btn-sm btn-danger"
-                                                    onclick="deleteProduct({{ $item->id }})">
+                                                <button class="btn btn-sm btn-danger" onclick="deleteProduct({{ $item->id }})"  >
                                                     <i class="mdi mdi-delete"></i>
                                                 </button>
-                                            </form>
+                                            </form> --}}
                                         </td>
                                     </tr>
                                 @empty
@@ -95,7 +97,7 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        {{ $orders->appends(['paginate' => request('paginate')])->links()  }}
+                        {{ $orders->appends(['paginate' => request('paginate')])->links() }}
                     </div>
                 </div>
             </div>

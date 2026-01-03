@@ -38,19 +38,19 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index'])->name('orders.index');
-        Route::get('/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/show/{id}', [OrderController::class, 'show'])->name('orders.show');
         Route::post('/store', [OrderController::class, 'store'])->name('orders.store');
         Route::post('/{id}/upload-proof', [OrderController::class, 'uploadPaymentProof'])->name('order.upload_proof');
-        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('admin.orders.cancel');
         Route::delete('/destroy/items/{id}', [OrderController::class, 'destroyItems'])->name('orders.destroy');
         Route::put('/{id}/restore', [OrderController::class, 'restore'])->name('orders.restore');
         Route::get('/order/trashed', [OrderController::class, 'trashed'])->name('orders.trashed');
+        Route::put('/{id}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
         // Route::get('/my-orders', OrderController::class.'@index')->name('orders.index');
     });
     Route::prefix('user')->group(function () {
         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user.profile');
-        Route::get('/edit/{id}', [UserController::class, 'editAddress'])->name('profile.edit');
-        Route::put('/update/{id}', [UserController::class, 'updateAddress'])->name('profile.update');
+        Route::get('/edit/{id}', [UserController::class, 'editProfile'])->name('profile.edit');
+        Route::put('/update/{id}', [UserController::class, 'updateProfile'])->name('profile.update');
     });
 });
 Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {

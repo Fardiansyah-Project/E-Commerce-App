@@ -32,15 +32,10 @@
                                                 class="btn btn-sm btn-warning mr-2">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('admin.categories.destroy', $category->id) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-danger"
-                                                    onclick="deleteProduct({{ $category->id }})">
-                                                    <i class="mdi mdi-delete"></i>
-                                                </button>
-                                            </form>
+                                            <a href="{{ route('admin.categories.destroy', $category->id) }}"
+                                               data-confirm-delete="true" class="btn btn-sm btn-danger">
+                                                <i class="mdi mdi-delete"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 @empty

@@ -8,10 +8,17 @@
                 @csrf
                 <div class="mb-5">
                     <label class="block mb-2">Metode Pembayaran</label>
-                    <select name="payment_method" class="w-full p-3 border rounded-xl">
+                    {{-- <select name="payment_method" class="w-full p-3 border rounded-xl">
                         <option disabled selected class="text-slate-600">--Pilih Metode--</option>
-                        <option value="TRANSFER" {{ old('payment_method') == 'TRANSFER' ? 'selected' : '' }}>Transfer</option>
+                        <option value="TRANSFER" {{ old('payment_method') == 'TRANSFER' ? 'selected' : '' }}>Transfer
+                        </option>
                         <option value="COD" {{ old('payment_method') == 'COD' ? 'selected' : '' }}>COD</option>
+                    </select> --}}
+                    <select name="payment_method" id="payment_method" class="w-full p-3 border rounded-xl">
+                        <option value="">-- Pilih Metode Pembayaran --</option>
+                        <option value="COD" {{ old('payment_method') == 'COD' ? 'selected' : '' }}>COD</option>
+                        <option value="TRANSFER" {{ old('payment_method') == 'TRANSFER' ? 'selected' : '' }}>Transfer
+                        </option>
                     </select>
                     @error('payment_method')
                         <p class="text-red-500">{{ $message }}</p>
@@ -25,8 +32,8 @@
                         <p class="text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
-                <div id="proof" class="mb-5">
-                    <p class="text-green-300 mb-1" style="display: none">
+                <div id="payment_proof_wrapper" class="mt-3 hidden mb-3">
+                    <p class="text-green-300 mb-1">
                         No Rek: xxx.xxx.xxx
                     </p>
                     <label class="block mb-2">Upload Bukti Transfer</label>
@@ -43,13 +50,31 @@
 
     </div>
 
-    <script>
+    {{-- <script>
         document.querySelector('[name=payment_method]').addEventListener('change', e => {
             document.getElementById('proof').style.display =
                 e.target.value === 'TRANSFER' ? 'block' : 'none';
         });
-    </script>
-    {{-- <x-app-layout title="Checkout">
+    </script> --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentMethod = document.getElementById('payment_method');
+            const paymentProof = document.getElementById('payment_proof_wrapper');
+            const inputProof = document.querySelector('input[name="payment_proof"]');
 
-    </x-app-layout> --}}
+            function togglePaymentProof() {
+                if (paymentMethod.value === 'TRANSFER') {
+                    paymentProof.classList.remove('hidden');
+                } else {
+                    paymentProof.classList.add('hidden');
+                }
+            }
+
+            // 🔥 PENTING: jalankan saat page load
+            togglePaymentProof();
+
+            // Jalankan saat user ganti metode
+            paymentMethod.addEventListener('change', togglePaymentProof);
+        });
+    </script>
 @endsection

@@ -62,12 +62,43 @@
                                         <td>
                                             {{ $item->status }}
                                         </td>
-                                        <td class="d-flex">
+                                        <td colspan="3" class="d-flex flex-row">
                                             <a href="{{ route('admin.orders.edit_status', $item->id) }}"
                                                 class="btn btn-sm btn-warning mr-2">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
                                             @if ($item->status == 'PENDING')
+                                                <form  action="{{ route('admin.orders.update_status', $item->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                                    <input type="hidden" name="status" value="CONFIRMED">
+                                                    @if ($item->payment_method == 'TRANSFER')
+                                                        <input type="hidden" name="payment_status" value="CONFIRMED">
+                                                    @else
+                                                        <input type="hidden" name="payment_status" value="PENDING">
+                                                    @endif
+                                                    <button type="submit" class="btn btn-sm btn-info">
+                                                        <i class="mdi mdi-check"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('admin.orders.update_status', $item->id) }}"
+                                                    method="post">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <input type="hidden" name="id" value="{{ $item->id }}">
+                                                    <input type="hidden" name="status" value="CANCELLED">
+                                                    @if ($item->payment_method == 'TRANSFER')
+                                                        <input type="hidden" name="payment_status" value="CANCELLED">
+                                                    @else
+                                                        <input type="hidden" name="payment_status" value="PENDING">
+                                                    @endif
+                                                    <button type="submit" class="btn btn-sm btn-danger ml-2">
+                                                        <i class="mdi mdi-close"></i>
+                                                    </button>
+                                                </form>
+                                            @else
                                                 <form action="{{ route('admin.orders.update_status', $item->id) }}"
                                                     method="post">
                                                     @csrf

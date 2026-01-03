@@ -4,8 +4,8 @@
 
         <div class="hidden md:flex items-center space-x-7">
             @auth
-                <a href="{{ url('user/profile/'. auth()->user()->id ) }}"
-                    class="{{ request()->is('user/profile/'. auth()->user()->id) ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
+                <a href="{{ url('user/profile/' . auth()->user()->id) }}"
+                    class="{{ request()->is('user/profile/' . auth()->user()->id) ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
                     <i class="fas fa-user"></i>
                 </a>
             @endauth
@@ -17,10 +17,12 @@
                 class="{{ request()->is('products') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
                 <i class="fas fa-box"></i>
             </a>
-            <a href="{{ url('/orders') }}"
-                class="{{ request()->is('orders') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
-                <i class="fas fa-truck"></i>
-            </a>
+            @auth
+                <a href="{{ url('/orders') }}"
+                    class="{{ request()->is('orders') ? 'text-gray-800 font-semibold' : 'text-gray-600' }} hover:text-black">
+                    <i class="fas fa-truck"></i>
+                </a>
+            @endauth
             @auth
                 <a href="/cart" class="relative">
                     <span

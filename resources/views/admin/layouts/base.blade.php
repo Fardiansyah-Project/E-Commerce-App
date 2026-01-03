@@ -33,6 +33,7 @@
 
     <!-- plugins:js -->
     @include('admin.layouts.script')
+    @include('sweetalert::alert')
     <!-- End custom js for this page -->
 </body>
 

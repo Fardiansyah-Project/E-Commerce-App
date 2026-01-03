@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CheckoutController extends Controller
 {
@@ -37,7 +38,7 @@ class CheckoutController extends Controller
 
         $order = Order::create([
             'user_id'         => auth()->id(),
-            'order_no'        => 'ORD' . time(),
+            'order_no'        => 'ORD-' . time(),
             'total_amount'    => $cart->items->sum(fn($i) => $i->qty * $i->price_snapshot),
             'shipping_address' => $r->address,
             'payment_method'  => $r->payment_method,
@@ -69,7 +70,7 @@ class CheckoutController extends Controller
         }
 
         $cart->items()->delete(); 
-
+        Alert::success('Success', 'Pesanan berhasil dibuat!');
         return redirect()->route('orders.show', $order->id)
             ->with('success', 'Pesanan telah dibuat.');
     }

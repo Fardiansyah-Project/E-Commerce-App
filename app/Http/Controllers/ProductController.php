@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Jorenvh\Share\Share;
 use Jorenvh\Share\ShareFacade;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,11 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::paginate(10);
+        $products = Product::paginate(7);
+        
+        $title = 'Hapus!';
+        $text = "Kamu Yakin menghapus ini?";
+        confirmDelete($title, $text);
         return view('admin.products.index', compact('products'));
     }
 
@@ -65,14 +70,22 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            // 'sku' => 'required|string',
             'category_id' => 'required|integer',
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'sale_price' => 'required|numeric',
-            // 'is_active' => 'required|boolean',
-            // 'views' => 'required|string',
+            'sale_price' => 'numeric',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'name.required' => 'Nama produk wajib diisi',
+            'category_id.required' => 'Kategori produk wajib diisi',
+            'description.required' => 'Deskripsi produk wajib diisi',
+            'price.required' => 'Harga produk wajib diisi',
+            'sale_price.numeric' => 'Harga diskon harus berupa angka',
+            'stock.required' => 'Stok produk wajib diisi',
+            'image.required' => 'Foto produk wajib diisi',
+            'image.image' => 'File harus berupa gambar',
+            'image.max' => 'Ukuran file maksimal 2MB',
         ]);
 
         $slug = strtolower(str_replace(' ', '-', $request->name));
@@ -103,7 +116,7 @@ class ProductController extends Controller
         }
 
         $product->save();
-
+        Alert::success('success', 'Produk berhasil ditambahkan');
         return redirect()->route('admin.products.index')->with('success', 'Product berhasil dibuat.');
     }
 
@@ -122,8 +135,19 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'sale_price' => 'required|numeric',
-            'sku' => 'required'
+            'sale_price' => 'numeric',
+            'sku' => 'required',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'name.required' => 'Nama produk wajib diisi',
+            'category_id.required' => 'Kategori wajib diisi',
+            'description.required' => 'Deskripsi wajib diisi',
+            'price.required' => 'Harga wajib diisi',
+            'stock.required' => 'Stok wajib diisi',
+            'sale_price.numeric' => 'Harga diskon harus berupa angka',
+            'sku.required' => 'SKU wajib diisi',
+            'image.image' => 'File harus berupa gambar',
+            'image.max' => 'Ukuran file maksimal 2MB',
         ]);
 
         $slug = strtolower(str_replace(' ', '-', $request->name));
@@ -150,6 +174,7 @@ class ProductController extends Controller
             $product->image = $imageName;
         }
         $product->update();
+        Alert::success('Success', 'Perubahan berhasil disimpan');
         return redirect()->route('admin.products.index')->with('success', 'Product berhasil diperbarui.');
     }
 
@@ -157,6 +182,8 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
+
+        Alert::success('Success', 'Produk berhasil dihapus');
         return redirect()->route('admin.products.index')->with('success', 'Product berhasil dihapus.');
     }
 }

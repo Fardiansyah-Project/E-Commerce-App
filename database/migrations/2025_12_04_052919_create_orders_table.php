@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('payment_method', ['TRANSFER', 'COD']);
             $table->enum('payment_status', ['PENDING', 'CONFIRMED'])->default('PENDING');
             $table->string('payment_proof')->nullable();
-            $table->enum('status', ['PENDING', 'PROCESSING', 'COMPLETED', 'CANCELLED'])->default('PENDING');
+            $table->enum('status', ['PENDING', 'CONFIRMED', 'COMPLETED', 'CANCELLED'])->default('PENDING');
             $table->timestamps();
         });
     }

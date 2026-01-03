@@ -12,8 +12,15 @@
             <div class="profile-desc">
                 <div class="profile-pic">
                     <div class="count-indicator">
-                        <img class="img-xs rounded-circle " src="{{ asset('assets/images/faces/face15.jpg') }}"
-                            alt="">
+                        {{-- <img class="img-xs rounded-circle " src="{{ asset('assets/images/faces/face15.jpg') }}"
+                            alt=""> --}}
+                        @if (!empty(auth()->user()->avatar))
+                            <img src="{{ asset('storage/images/profile/' . auth()->user()->avatar) }}"
+                                class="rounded-circle" alt="Avatar" width="40">
+                        @else
+                            <img src="{{ auth()->user()->avatar ?? 'https://ui-avatars.com/api/?name=' . auth()->user()->name }}"
+                                class="rounded-circle" alt="Avatar" width="40">
+                        @endif
                         <span class="count bg-success"></span>
                     </div>
                     <div class="profile-name">
@@ -104,7 +111,8 @@
             <span class="nav-link">Lainnya</span>
         </li>
         <li class="nav-item menu-items">
-            <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}" href="{{ url('admin/categories') }}">
+            <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}"
+                href="{{ url('admin/categories') }}">
                 <span class="menu-icon">
                     <i class="mdi mdi-package-variant-closed"></i>
                 </span>

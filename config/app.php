@@ -123,12 +123,4 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
-    // 'aliases' => [
-    //     'Share' => Jorenvh\Share\ShareFacade::class
-    // ],
-    // config/app.php
-    // 'providers' => [
-    //     Jorenvh\Share\Providers\ShareServiceProvider::class,
-    // ],
-
 ];

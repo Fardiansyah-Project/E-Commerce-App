@@ -16,7 +16,7 @@
                     <input type="file" name="payment_proof" class="w-full border p-2 rounded-xl">
                 </div>
                 <button type="submit" class="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800">
-                    Proses Pemesanan
+                    Proses 
                 </button>
             </form>
         </div>
@@ -24,9 +24,11 @@
     </div>
 
     <script>
+        const proof = document.getElementById('proof');
+        proof.style.display = 'none';
         document.querySelector('[name=payment_method]').addEventListener('change', e => {
-            document.getElementById('proof').style.display =
-                e.target.value === 'transfer' ? 'block' : 'none';
+            proof.style.display =
+                e.target.value === 'TRANSFER' ? 'block' : 'none';
         });
     </script>
     {{-- <x-app-layout title="Checkout">

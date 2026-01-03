@@ -1,8 +1,10 @@
 @extends('layouts.app')
 @section('content')
     <div class="container mx-auto px-4 sm:px-5 py-6 sm:py-10">
-
-        <h2 class="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6">Keranjang Belanja</h2>
+        <div class="mb-6">
+            <h2 class="text-2xl sm:text-3xl font-semibold mb-2">Keranjang Belanja</h2>
+            <p class="text-slate-500">Daftar belanjaan anda saat ini</p>
+        </div>
 
         @if (!$cart || $cart->items->isEmpty())
             <div class="bg-white p-8 rounded-xl shadow text-center">

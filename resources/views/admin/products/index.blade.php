@@ -20,10 +20,12 @@
                                 <th> No </th>
                                 <th> Nama Produk </th>
                                 <th> SKU </th>
-                                <th>Slug</th>
+                                <th> Slug </th>
                                 <th> Harga </th>
-                                <th>Foto</th>
+                                <th> Stok </th>
+                                <th> Foto </th>
                                 <th>Kategori</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -35,6 +37,7 @@
                                     <td>{{ $product->sku }}</td>
                                     <td>{{ $product->slug }}</td>
                                     <td>Rp{{ number_format($product->price, 0, ',', '.') }}</td>
+                                    <td>{{ $product->stock }}</td>
                                     <td>
                                         <a href="{{ asset('storage/images/products/' . $product->image) }}" target="_blank">
                                             <img src="{{ asset('storage/images/products/' . $product->image) }}"
@@ -42,19 +45,22 @@
                                         </a>
                                     </td>
                                     <td>{{ $product->category->name }}</td>
+                                    <td>
+                                        @if ($product->is_active == 1)
+                                            <span class="badge badge-success">Tersedia</span>
+                                        @else
+                                            <span class="badge badge-danger">Kosong</span>
+                                        @endif
+                                    </td>
                                     <td class="d-flex">
                                         <a href="{{ route('admin.products.edit', $product->id) }}"
                                             class="btn btn-sm btn-warning mr-2">
                                             <i class="mdi mdi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-sm btn-danger"
-                                                onclick="deleteProduct({{ $product->id }})">
-                                                <i class="mdi mdi-delete"></i>
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('admin.products.destroy', $product->id) }}" class="btn btn-sm btn-danger"
+                                            data-confirm-delete="true">
+                                            <i class="mdi mdi-delete"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             @empty

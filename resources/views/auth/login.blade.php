@@ -77,7 +77,7 @@
 
             if (alertBox.classList.contains('success')) {
                 setTimeout(() => {
-                    window.location.href = "{{ url('/products') }}"; // ganti sesuai route dashboard Anda
+                    window.location.href = "{{ url('/products') }}"; // ganti sesuai route 
                 }, 2500);
             }
 
@@ -91,6 +91,7 @@
             const pass = document.getElementById("password");
             pass.type = pass.type === "password" ? "text" : "password";
         }
+
     </script>
 
 </body>

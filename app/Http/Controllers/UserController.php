@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -14,6 +15,9 @@ class UserController extends Controller
         $users = User::where('role', 'CUSTOMER')
             ->paginate(10);
 
+        $title = 'Hapus!';
+        $text = "Kamu Yakin menghapus ini?";
+        confirmDelete($title, $text);
         return view('admin.users.index', compact('users'));
     }
     public function admin()
@@ -22,6 +26,9 @@ class UserController extends Controller
             ->where('id', '!=', Auth::id())
             ->paginate(10);
 
+        $title = 'Hapus!';
+        $text = "Kamu Yakin menghapus ini?";
+        confirmDelete($title, $text);
         return view('admin.users.admin', compact('admins'));
     }
 
@@ -56,10 +63,12 @@ class UserController extends Controller
         $data->save();
 
         if ($request->role == "ADMIN") {
+
+            Alert::success('success', 'Admin berhasil ditambahkan');
             return redirect()->route('admin.users.admin')->with('success', 'Admin berhasil ditambahkan');
         }
-
-        return redirect()->route('admin.users.index')->with('success', 'Penguna berhasil ditambahkan');
+        
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -94,9 +103,14 @@ class UserController extends Controller
             $data->password = Hash::make($request->password);
         }
         $data->role = $request->role;
+        if ($request->role == "ADMIN") {
+            Alert::success('success', 'Admin berhasil diperbarui');
+            return redirect()->route('admin.users.admin')->with('success', 'Admin berhasil diperbarui');
+        }
         $data->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'Penguna berhasil diperbarui');
+        Alert::success('success', 'Pengguna berhasil diperbarui');
+        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -105,9 +119,10 @@ class UserController extends Controller
         $data->delete();
 
         if ($data->role == "ADMIN") {
-            return redirect()->route('admin.users.admin')->with('success', 'Pengguna berhasil dihapus');
+            Alert::success('success', 'Admin berhasil dihapus');
+            return redirect()->route('admin.users.admin')->with('success', 'Admin berhasil dihapus');
         }
-
+        Alert::success('success', 'Pengguna berhasil dihapus');
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus');
     }
 
@@ -117,23 +132,58 @@ class UserController extends Controller
         return view('profile.profile', compact('user'));
     }
 
-    public function editAddress($id)
+    public function editProfile($id)
     {
         $user = User::findOrFail($id);
+        if ($user->role == "ADMIN") {
+            return redirect()->route('admin.users.admin');
+        }
         return view('profile.edit', compact('user'));
     }
 
-    public function updateAddress(Request $request, $id)
+    public function updateProfile(Request $request, $id)
     {
-        $request->validate([
-            'address' => ['required', 'string', 'max:255'],
-        ]);
+        // $request->validate([
+        //     'address' => ['required', 'string', 'max:255'],
+        //     'name' => 'required',
+        //     'email' => 'required|email|unique:users,email,' . $id,
+        //     'phone' => 'required|numeric|min:11|max:13|unique:users,phone,' . $id,
+        //     'avatar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        // ], [
+        //     'address.required' => 'Alamat wajib diisi',
+        //     'phone.required' => 'No. Telepon wajib diisi',
+        //     'phone.numeric' => 'No. Telepon harus berupa angka',
+        //     'phone.min' => 'No. Telepon minimal 10 karakter',
+        //     'phone.max' => 'No. Telepon maksimal 13 karakter',
+        //     'name.required' => 'Nama wajib diisi',
+        //     'email.required' => 'Email wajib diisi',
+        //     'email.email' => 'Email tidak valid',
+        //     'email.unique' => 'Email sudah terdaftar',
+        //     'avatar.image' => 'File harus berupa gambar',
+        //     'avatar.mimes' => 'File harus berupa gambar dengan format jpeg, png, jpg, atau gif',
+        //     'avatar.max' => 'Ukuran file maksimal 2MB',
+        // ]);
 
         $user = User::findOrFail($id);
-
         $user->address = $request->address;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
+            return redirect()->route('user.profile', $id)->with('success', 'Password berhasil diperbarui!');
+        }
+        if ($request->hasFile('avatar')) {
+            $imageName = time() . '_' . $request->file('avatar')->getClientOriginalName();
+            $request->file('avatar')->move(public_path('storage/images/profile'), $imageName);
+            $user->avatar = $imageName;
+        }
+        if (empty($request->address) || empty($request->name) || empty($request->email) || empty($request->phone)) {
+            Alert::Warning('Warning', 'Inputan anda tidak valid!');
+            return redirect()->back();
+        }
         $user->update();
-
-        return redirect()->back()->with('success', 'Alamat berhasil diperbarui!');
+        Alert::success('Success', 'Perubahan berhasil disimpan!');
+        return redirect()->route('user.profile', $id)->with('success', 'Data berhasil diperbarui!');
     }
 }

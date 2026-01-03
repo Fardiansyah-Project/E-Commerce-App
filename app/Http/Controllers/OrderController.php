@@ -8,6 +8,7 @@ use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class OrderController extends Controller
 {
@@ -16,12 +17,17 @@ class OrderController extends Controller
         $paginate = $request->input('paginate', 5);
         $orders = Order::orderBy('id', 'desc')->paginate($paginate);
 
+        $title = 'Hapus!';
+        $text = "Kamu Yakin menghapus ini?";
+        confirmDelete($title, $text);
         return view('admin.orders.history', compact('orders'));
     }
     public function getOrder(Request $request)
     {
         $paginate = $request->input('paginate', 10);
-        $orders = Order::where('status', 'PENDING')->paginate($paginate);
+        $orders = Order::where('status', 'PENDING')
+            ->orWhere('status', 'CONFIRMED')
+            ->paginate($paginate);
 
         return view('admin.orders.index', compact('orders'));
     }
@@ -33,15 +39,18 @@ class OrderController extends Controller
 
         return view('admin.orders.success', compact('orders'));
     }
-    
+
     public function index()
     {
         $orders = Auth::user()
             ->orders()
             ->where('is_hidden_by_user', false)
             ->with('items.product')
-            ->get();
+            ->paginate(2);
 
+        $title = 'Hapus!';
+        $text = "Kamu Yakin menghapus ini?";
+        // confirmDelete($title, $text);
         return view('orders.index', compact('orders'));
     }
 
@@ -68,7 +77,7 @@ class OrderController extends Controller
                 $item->product->decrement('stock', $item->qty);
             });
         }
-        
+
         $order->update(['payment_status' => $request->payment_status]);
         // if ($order->payment_status == 'COMPLETED') {
         //     $order->items()->each(function ($item) {
@@ -76,11 +85,12 @@ class OrderController extends Controller
         //     });
         // }
 
-        if ($order->status == 'CANCELLED') {
-            $order->items()->each(function ($item) {
-                $item->product->increment('stock', $item->qty);
-            });
-        }
+        // if ($order->status == 'CANCELLED') {
+        //     $order->items()->each(function ($item) {
+        //         $item->product->increment('stock', $item->qty);
+        //     });
+        // }
+        Alert::success('Success', 'Status pesanan berhasil diperbarui!');
         return redirect()->back()->with('success', 'Status pesanan berhasil diubah.');
     }
 
@@ -104,16 +114,16 @@ class OrderController extends Controller
         return back()->with('success', 'Bukti pembayaran berhasil diunggah.');
     }
 
-    public function cancel($id)
+    public function cancel(Request $request, $id)
     {
-        $order = Auth::user()->orders()->findOrFail($id);
-
+        $order = Order::findOrFail($id);
+        $order->update([
+            'status' => $request->status,
+        ]);
         if ($order->status !== 'PENDING') {
             return back()->with('error', 'Hanya order dengan status PENDING yang dapat dibatalkan.');
         }
-
-        $order->update(['status' => 'CANCELLED']);
-
+        Alert::success('Success', 'Status pesanan berhasil diperbarui!');
         return back()->with('success', 'Order berhasil dibatalkan.');
     }
 
@@ -160,7 +170,7 @@ class OrderController extends Controller
             return redirect()->route('admin.orders.index')->with('error', 'Pesanan sudah selesai, tidak bisa dihapus!');
         }
         $order->delete();
-
+        Alert::success('Success', 'Data pesanan berhasil dihapus!');
         return redirect()->route('admin.orders.history')->with('success', 'Data pesanan berhasil dihapus!');
     }
 
@@ -175,6 +185,7 @@ class OrderController extends Controller
             'is_hidden_by_user' => true
         ]);
 
+        Alert::success('Success', 'Status pesanan berhasil dihapus!');
         return redirect()
             ->route('orders.index')
             ->with('success', 'Pesanan berhasil dihapus dari daftar kamu.');
@@ -190,7 +201,7 @@ class OrderController extends Controller
         $order->update([
             'is_hidden_by_user' => false
         ]);
-
+        Alert::success('Success', 'Status pesanan berhasil dipulihkan!');
         return redirect()
             ->route('orders.index')
             ->with('success', 'Pesanan berhasil dipulihkan.');
