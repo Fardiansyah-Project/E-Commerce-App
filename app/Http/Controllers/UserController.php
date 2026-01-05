@@ -172,7 +172,7 @@ class UserController extends Controller
         $user->update();
 
         Alert::success('Success', 'Password berhasil diperbarui!');
-        return redirect()->route('admin.profile.edit_password', $id)->with('success', 'Password berhasil diperbarui!');
+        return redirect()->route('admin.profile.edit_ password', Auth::user()->id)->with('success', 'Password berhasil diperbarui!');
     }
 
     public function adminProfile($id)

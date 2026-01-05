@@ -10,7 +10,8 @@
                     <div class="group">
                         <img src="{{ asset('storage/images/products/' . $product->image) }}"
                             class="w-full h-48 object-cover rounded-lg mb-4 duration-500 scale-50 md:scale-none group-hover:scale-150 group-hover:ease-in-out group-hover:duration-1000">
-                    </div>
+                    </div> 
+                    <span class="text-slate-700 font-semibold text-sm sm:text-base"> {{ $product->category->name }} </span>
                     <h3 class="font-semibold">{{ $product->name }}</h3>
                     <p class="text-gray-500">Rp {{ number_format($product->price) }}</p>
 
@@ -23,14 +24,15 @@
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <input type="hidden" name="qty" value="1">
 
-                        @if (!empty($product->stock))
+                        @if (!empty($product->stock))  
                             <button
                                 class="block bg-black text-white text-center mt-3 py-3 px-3 rounded-lg hover:bg-gray-800 hover:scale-90 hover:duration-100 hover:ease-in-out text-sm md:text-md">
                                 <i class="fas fa-cart-plus"></i> Tambah ke keranjang
                             </button>
                         @else
                             <button
-                                class="block bg-gray-400 text-white text-center mt-3 py-3 px-3 rounded-lg hover:bg-gray-800 hover:scale-90 hover:duration-100 hover:ease-in-out text-sm md:text-md" disabled>
+                                class="block bg-gray-400 text-white text-center mt-3 py-3 px-3 rounded-lg hover:bg-gray-800 hover:scale-90 hover:duration-100 hover:ease-in-out text-sm md:text-md"
+                                disabled>
                                 <i class="fas fa-cart-plus"></i> Tambah ke keranjang
                             </button>
                         @endif

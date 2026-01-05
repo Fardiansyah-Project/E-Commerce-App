@@ -111,6 +111,15 @@
             <span class="nav-link">Lainnya</span>
         </li>
         <li class="nav-item menu-items">
+            <a class="nav-link {{ request()->is('orders*') ? 'active' : '' }}"
+                href="{{ url('admin/orders/reports') }}">
+                <span class="menu-icon">
+                    <i class="mdi mdi-package-variant-closed"></i>
+                </span>
+                <span class="menu-title">Laporan</span>
+            </a>
+        </li>
+        <li class="nav-item menu-items">
             <a class="nav-link {{ request()->is('categories*') ? 'active' : '' }}"
                 href="{{ url('admin/categories') }}">
                 <span class="menu-icon">

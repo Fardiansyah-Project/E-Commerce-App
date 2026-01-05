@@ -71,6 +71,13 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::get('/success', [OrderController::class, 'getSuccess'])->name('admin.orders.success');
         Route::get('/history', [OrderController::class, 'getAllData'])->name('admin.orders.history');
         Route::delete('/destroy/{id}', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
+        Route::get('/reports', [OrderController::class, 'reports'])->name('admin.orders.reports');
+        Route::get('/admin/orders/export-pdf', [OrderController::class, 'exportPdf'])
+            ->name('admin.orders.export.pdf');
+        Route::get('/export-excel', [OrderController::class, 'exportExcel'])
+            ->name('admin.orders.export.excel');
+        Route::get('/export-excel', [OrderController::class, 'exportExcel'])
+            ->name('admin.orders.export.excel');
     });
     Route::prefix('users')->group(function () {
         Route::get('/customers', [UserController::class, 'index'])->name('admin.users.index');
@@ -96,4 +103,7 @@ Route::middleware(['auth', 'Admin'])->prefix('admin')->group(function () {
         Route::get('/edit-password/{id}', [UserController::class, 'editPassword'])->name('admin.profile.edit_ password');
         Route::put('/change-password/{id}', [UserController::class, 'updatePassword'])->name('admin.profile.change_password');
     });
+    // Route::prefix('orders-report')->group(function () {
+    //     Route::get('/', [OrderController::class, 'reports'])->name('admin.orders.reports');
+    // });
 });

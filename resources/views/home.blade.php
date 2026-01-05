@@ -2,7 +2,7 @@
 
 @section('content')
     <style>
-        
+
     </style>
 
     <div class="container mx-auto px-4 sm:px-5 py-6 sm:py-10">
@@ -64,7 +64,8 @@
                                     class="font-semibold text-sm sm:text-base lg:text-lg text-gray-900 mb-1 sm:mb-2 line-clamp-2 min-h-[40px] sm:min-h-[48px]">
                                     {{ $product->name }}
                                 </h3>
-
+                                <span class="text-slate-700 font-semibold text-sm sm:text-base">
+                                    {{ $product->category->name }} </span>
                                 <p class="text-gray-900 font-bold text-sm sm:text-base lg:text-lg mb-2 sm:mb-3">
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </p>
@@ -120,7 +121,8 @@
                                     class="font-semibold text-sm sm:text-base lg:text-lg text-gray-900 mb-1 sm:mb-2 line-clamp-2 min-h-[40px] sm:min-h-[48px]">
                                     {{ $product->name }}
                                 </h3>
-
+                                <span class="text-slate-700 font-semibold text-sm sm:text-base">
+                                    {{ $product->category->name }} </span>
                                 <p class="text-gray-900 font-bold text-sm sm:text-base lg:text-lg mb-2 sm:mb-3">
                                     Rp{{ number_format($product->price, 0, ',', '.') }}
                                 </p>

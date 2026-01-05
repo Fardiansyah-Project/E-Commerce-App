@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrdersReportExport;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class OrderController extends Controller
@@ -216,5 +220,58 @@ class OrderController extends Controller
             ->get();
 
         return view('orders.trashed', compact('orders'));
+    }
+
+    public function reports(Request $request)
+    {
+        $paginate  = $request->input('paginate', 10);
+        $startDate = $request->input('start_date');
+        $endDate   = $request->input('end_date');
+
+        $orders = Order::with('user')
+            ->where('status', 'COMPLETED')
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($paginate);
+
+        return view('admin.orders.reports', compact('orders'));
+    }
+
+    public function exportExcel(Request $request)
+    {
+        return Excel::download(
+            new OrdersReportExport(
+                $request->start_date,
+                $request->end_date
+            ),
+            'laporan-order-selesai.xlsx'
+        );
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate   = $request->input('end_date');
+
+        $orders = Order::with('user')
+            ->where('status', 'COMPLETED')
+            ->when($startDate, function ($query) use ($startDate) {
+                $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        $pdf = Pdf::loadView('admin.orders.report-pdf', compact('orders'))
+            ->setPaper('A4', 'landscape');
+
+        return $pdf->download('laporan-order-selesai.pdf');
     }
 }
