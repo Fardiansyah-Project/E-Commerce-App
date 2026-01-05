@@ -55,7 +55,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="7" align="center">Tidak ada data laporan</td>
+                    <td colspan="7" align="center" style="color: #04040485">Tidak ada data laporan</td>
                 </tr>
             @endforelse
         </tbody>

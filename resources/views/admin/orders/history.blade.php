@@ -10,14 +10,25 @@
                 <div class="card-body">
                     <div class="gap-3">
                         <h4 class="card-title">Data Order</h4>
-                        <select name="paginate" id="paginate" class="form-control w-auto">
+                        {{-- <select name="paginate" id="paginate" class="form-control w-auto">
                             <option value="">Pilih baris data</option>
                             <option value="5" {{ request('paginate') == 5 ? 'selected' : '' }}>5</option>
                             <option value="10" {{ request('paginate') == 10 ? 'selected' : '' }}>10</option>
                             <option value="20" {{ request('paginate') == 20 ? 'selected' : '' }}>20</option>
                             <option value="50" {{ request('paginate') == 50 ? 'selected' : '' }}>50</option>
                             <option value="100" {{ request('paginate') == 100 ? 'selected' : '' }}>100</option>
-                        </select>
+                        </select> --}}
+                        <form method="GET" action="{{ route('admin.orders.history') }}" id="paginateForm">
+                            <select name="paginate" id="paginate" class="form-control w-auto">
+                                <option value="">Pilih baris data</option>
+                                <option value="5" {{ request('paginate') == 5 ? 'selected' : '' }}>5</option>
+                                <option value="10" {{ request('paginate') == 10 ? 'selected' : '' }}>10</option>
+                                <option value="20" {{ request('paginate') == 20 ? 'selected' : '' }}>20</option>
+                                <option value="50" {{ request('paginate') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('paginate') == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </form>
+
                     </div>
                     <div class="table-responsive">
                         <table class="table">
@@ -77,7 +88,8 @@
                                                 class="btn btn-sm btn-warning mr-2">
                                                 <i class="mdi mdi-pencil"></i>
                                             </a>
-                                            <a href="{{ route('admin.orders.destroy', $item->id) }}" class="btn btn-sm btn-danger" data-confirm-delete="true" >
+                                            <a href="{{ route('admin.orders.destroy', $item->id) }}"
+                                                class="btn btn-sm btn-danger" data-confirm-delete="true">
                                                 <i class="mdi mdi-delete"></i>
                                             </a>
                                             {{-- <form action="{{ route('admin.orders.destroy', $item->id) }}" method="post">
@@ -103,4 +115,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        document.getElementById('paginate').addEventListener('change', function() {
+            document.getElementById('paginateForm').submit();
+        });
+    </script>
 @endsection
